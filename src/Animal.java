@@ -8,7 +8,7 @@ public class Animal {
     public String hapticFile;
     public Category category;
 
-    public Animal(String nameIn, String soundFileIn, String imageFileIn, String hapticFileIn, Category categoryIn){
+    public Animal(String nameIn, Category categoryIn, String soundFileIn, String imageFileIn, String hapticFileIn){
         name=nameIn;
         soundFile=soundFileIn;
         imageFile=imageFileIn;
