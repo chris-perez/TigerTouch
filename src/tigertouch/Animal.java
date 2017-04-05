@@ -1,6 +1,5 @@
-/**
- * Created by Daniel on 4/4/2017.
- */
+package tigertouch;
+
 public class Animal {
     public String name;
     public String soundFile;

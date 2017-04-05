@@ -1,4 +1,4 @@
-# TigerTouch
+# tigertouch
 
 This is our readme file!
 

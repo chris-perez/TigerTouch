@@ -1,12 +1,8 @@
+package tigertouch;
 import java.util.ArrayList;
 import java.util.List;
-import Animal.Category;
+import static tigertouch.Animal.Category.AMPHIBIANS;
 
-import static Animal.Category.*;
-
-/**
- * Created by Chris on 4/4/2017.
- */
 public class Main {
   static int numAnimals = 20;
   static List<Animal> animals = new ArrayList<>();
@@ -15,7 +11,7 @@ public class Main {
   public static void main(String[] args) {
     for (int i = 0; i < numAnimals; i++){
       String name = "";
-      Category category = AMPHIBIANS;
+      Animal.Category category = AMPHIBIANS;
       String soundFile = "";
       String imageFile = "";
       String hapticFile = "";
