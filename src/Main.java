@@ -2,5 +2,7 @@
  * Created by Chris on 4/4/2017.
  */
 public class Main {
-    int stupid = 5;
+    public static void main(String[] args) {
+
+    }
 }
