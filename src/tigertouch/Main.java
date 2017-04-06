@@ -2,7 +2,6 @@ package tigertouch;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import static tigertouch.Animal.Category.AMPHIBIANS;
 
@@ -36,7 +35,7 @@ public class Main {
 
     // Begin Simulation Loop
     while(true){
-      if(currX !=StdDraw.mouseX() || currY != StdDraw.mouseY() || StdDraw.isKeyPressed(32) || StdDraw.mousePressed()) {
+      if(currX != StdDraw.mouseX() || currY != StdDraw.mouseY() || StdDraw.isKeyPressed(32) || StdDraw.mousePressed()) {
         double distance = Math.sqrt(Math.pow(StdDraw.mouseX()-currX,2)+Math.pow(StdDraw.mouseY()-currY,2));
         double time = System.currentTimeMillis()-lastChange;
         speed = distance / time;
@@ -47,13 +46,13 @@ public class Main {
 
   public static void userInput() {
     StdDraw.clear();
-    StdDraw.circle(StdDraw.mouseX(),StdDraw.mouseY(),40);
+    StdDraw.circle(StdDraw.mouseX(), StdDraw.mouseY(),40);
     currX = StdDraw.mouseX();
     currY = StdDraw.mouseY();
     lastChange = System.currentTimeMillis();
 
     if (StdDraw.mousePressed()) {
-      System.out.println("Finger position: "+StdDraw.mouseX()+","+StdDraw.mouseY());
+      System.out.println("Finger position: "+ StdDraw.mouseX()+","+ StdDraw.mouseY());
       //If space is pressed, apply additional force
       if (StdDraw.isKeyPressed(32)) {
         System.out.println("More Force too");
@@ -63,7 +62,7 @@ public class Main {
     }
   }
 
-  public static double getTouchValue(int x, int y) {
+  public static double getRoughness(int x, int y) {
     int radius = 4;
     double[][] grid = new double[100][100];
 
@@ -71,7 +70,17 @@ public class Main {
     int numValues = 0;
     for (int i = x - radius; i < x + radius; i++) {
       for (int j = y - (radius - Math.abs((x - i))); j < y + (radius - Math.abs((x - i))); j++) {
-        sum += grid[x][y];
+        if (i > 0 && j > 0 && i < grid.length - 1 && j < grid[0].length - 1) {
+          sum += grid[i][j] - grid[i - 1][j];
+          sum += grid[i][j] - grid[i + 1][j];
+          sum += grid[i][j] - grid[i][j - 1];
+          sum += grid[i][j] - grid[i][j + 1];
+          sum += grid[i][j] - grid[i - 1][j - 1];
+          sum += grid[i][j] - grid[i - 1][j + 1];
+          sum += grid[i][j] - grid[i + 1][j - 1];
+          sum += grid[i][j] - grid[i + 1][j + 1];
+        }
+        sum += grid[i][j];
         numValues++;
       }
     }
