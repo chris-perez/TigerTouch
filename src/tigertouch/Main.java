@@ -20,6 +20,8 @@ public class Main {
     }
   }
 
+
+
   public static void selectAnimal(int i) {
     currentAnimal = animals.get(i);
   }
