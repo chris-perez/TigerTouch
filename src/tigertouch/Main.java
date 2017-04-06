@@ -62,8 +62,14 @@ public class Main {
     }
   }
 
-  public static double getRoughness(int x, int y) {
-    int radius = 4;
+  /**
+   * Gets the roughness of an area by location and size.
+   * @param x x location of the grid
+   * @param y y location of the grid
+   * @param radius radius of the area to calculate roughness for
+   * @return the average difference in values of the given area
+   */
+  public static double getRoughness(int x, int y, int radius) {
     double[][] grid = new double[100][100];
 
     double sum = 0;
