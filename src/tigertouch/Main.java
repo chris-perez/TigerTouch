@@ -1,4 +1,5 @@
 package tigertouch;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +10,10 @@ public class Main {
   static int numAnimals = 20;
   static List<Animal> animals = new ArrayList<>();
   static Animal currentAnimal;
+  static double currX = 0;
+  static double currY = 0;
+  static double speed = 0;
+  static double lastChange = System.currentTimeMillis();
 
   public static void main(String[] args) {
     for (int i = 0; i < numAnimals; i++){
@@ -19,6 +24,42 @@ public class Main {
       String hapticFile = "";
       Animal animal = new Animal(name, category, soundFile, imageFile, hapticFile);
       animals.add(animal);
+    }
+
+    // Create Canvas Area
+    StdDraw.setCanvasSize(600, 600);
+    StdDraw.setXscale(0, 600);
+    StdDraw.setYscale(0, 600);
+    StdDraw.show();
+    StdDraw.setPenColor(Color.black);
+    StdDraw.text(300, 50, "Instructions: Move mouse around screen while holding down left mouse to simulate.");
+
+    // Begin Simulation Loop
+    while(true){
+      if(currX !=StdDraw.mouseX() || currY != StdDraw.mouseY() || StdDraw.isKeyPressed(32) || StdDraw.mousePressed()) {
+        double distance = Math.sqrt(Math.pow(StdDraw.mouseX()-currX,2)+Math.pow(StdDraw.mouseY()-currY,2));
+        double time = System.currentTimeMillis()-lastChange;
+        speed = distance / time;
+        userInput();
+      }
+    }
+  }
+
+  public static void userInput() {
+    StdDraw.clear();
+    StdDraw.circle(StdDraw.mouseX(),StdDraw.mouseY(),40);
+    currX = StdDraw.mouseX();
+    currY = StdDraw.mouseY();
+    lastChange = System.currentTimeMillis();
+
+    if (StdDraw.mousePressed()) {
+      System.out.println("Finger position: "+StdDraw.mouseX()+","+StdDraw.mouseY());
+      //If space is pressed, apply additional force
+      if (StdDraw.isKeyPressed(32)) {
+        System.out.println("More Force too");
+        //updateDisplay(currX, currY, speed);
+      }
+      //updateDisplay(currX, currY, speed);
     }
   }
 
