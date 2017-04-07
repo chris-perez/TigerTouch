@@ -78,6 +78,11 @@ public class Main {
         speed = distance / time;
         userInput();
       }
+      try {
+        Thread.sleep(10);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
     }
   }
 
@@ -95,6 +100,7 @@ public class Main {
       int mouseX = (int)StdDraw.mouseX();
       int mouseY = (int)StdDraw.mouseY();
       double roughness = getRoughness(mouseX, mouseY, TOUCH_RADIUS, grid);
+      roughness += speed/100;
       double frequency = roughness * 800;
       double totalForce = 0;
 //      System.out.println("Finger position: "+ mouseX+","+ mouseY);
@@ -106,6 +112,8 @@ public class Main {
         //updateDisplay(currX, currY, speed);
       }
       totalForce = Math.sqrt(Math.pow(force, 2) + Math.pow(force*currentAnimal.frictionCoefficient, 2));
+      totalForce += roughness/2;
+
       System.out.println("Force: " + totalForce + ", Frequency: " + frequency);
       //updateDisplay(currX, currY, speed);
     }
