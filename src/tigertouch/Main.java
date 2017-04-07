@@ -124,7 +124,9 @@ public class Main {
           sum += grid[i][j] - grid[i + 1][j - 1];
           sum += grid[i][j] - grid[i + 1][j + 1];
         }
-        sum += grid[i][j];
+        try {
+          sum += grid[i][j];
+        } catch (IndexOutOfBoundsException e) {}
         numValues++;
       }
     }
