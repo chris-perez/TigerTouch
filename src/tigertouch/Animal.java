@@ -2,17 +2,17 @@ package tigertouch;
 
 public class Animal {
   public String name;
-  public String soundFile;
   public String imageFile;
   public String hapticFile;
   public Category category;
+  public double frictionCoefficient;
 
-  public Animal(String nameIn, Category categoryIn, String soundFileIn, String imageFileIn, String hapticFileIn) {
+  public Animal(String nameIn, Category categoryIn, String imageFileIn, String hapticFileIn, double frictionCoefficient) {
     name = nameIn;
-    soundFile = soundFileIn;
     imageFile = imageFileIn;
     hapticFile = hapticFileIn;
     category = categoryIn;
+    this.frictionCoefficient = frictionCoefficient;
   }
 
   public enum Category{

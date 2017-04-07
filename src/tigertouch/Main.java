@@ -1,5 +1,6 @@
 package tigertouch;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -12,7 +13,7 @@ import static tigertouch.Animal.Category.AMPHIBIANS;
 
 public class Main {
   static String animalsFilepath = "Animals.json";
-  static int numAnimals = 20;
+  static final int TOUCH_RADIUS = 40;
   static List<Animal> animals = new ArrayList<>();
   static Animal currentAnimal;
   static double currX = 0;
@@ -20,6 +21,7 @@ public class Main {
   static double speed = 0;
   static double lastChange = System.currentTimeMillis();
   static int[][] grid;
+
 
   public static void main(String[] args) {
 
@@ -31,10 +33,10 @@ public class Main {
         JSONObject jsonObject = jsonArray.getJSONObject(i);
         String name = jsonObject.getString("name");
         Animal.Category category = Animal.Category.valueOf(jsonObject.getString("category"));
-        String soundFile = jsonObject.getString("soundFile");
         String imageFile = jsonObject.getString("imageFile");
         String hapticFile = jsonObject.getString("hapticFile");
-        Animal animal = new Animal(name, category, soundFile, imageFile, hapticFile);
+        double frictionCoefficient = jsonObject.getDouble("frictionCoefficient");
+        Animal animal = new Animal(name, category, imageFile, hapticFile, frictionCoefficient);
         animals.add(animal);
       }
     } catch (IOException e) {
@@ -83,21 +85,28 @@ public class Main {
     StdDraw.clear();
     StdDraw.picture(0, 0, currentAnimal.hapticFile);
     StdDraw.setPenColor(Color.green);
-    StdDraw.circle(StdDraw.mouseX(), StdDraw.mouseY(),40);
+    StdDraw.circle(StdDraw.mouseX(), StdDraw.mouseY(), TOUCH_RADIUS);
     currX = StdDraw.mouseX();
     currY = StdDraw.mouseY();
     lastChange = System.currentTimeMillis();
+    double force = .25;
 
     if (StdDraw.mousePressed()) {
       int mouseX = (int)StdDraw.mouseX();
       int mouseY = (int)StdDraw.mouseY();
-      System.out.println("Finger position: "+ mouseX+","+ mouseY);
-      System.out.println("Roughness: " + getRoughness(mouseX, mouseY, 5, grid));
+      double roughness = getRoughness(mouseX, mouseY, TOUCH_RADIUS, grid);
+      double frequency = roughness * 800;
+      double totalForce = 0;
+//      System.out.println("Finger position: "+ mouseX+","+ mouseY);
+//      System.out.println("Roughness: " + roughness);
       //If space is pressed, apply additional force
-      if (StdDraw.isKeyPressed(32)) {
-        System.out.println("More Force too");
+      if (StdDraw.isKeyPressed(KeyEvent.VK_SPACE)) {
+//        System.out.println("More Force too");
+        force *= 2;
         //updateDisplay(currX, currY, speed);
       }
+      totalForce = Math.sqrt(Math.pow(force, 2) + Math.pow(force*currentAnimal.frictionCoefficient, 2));
+      System.out.println("Force: " + totalForce + ", Frequency: " + frequency);
       //updateDisplay(currX, currY, speed);
     }
   }
@@ -131,7 +140,7 @@ public class Main {
       }
     }
 
-    return sum/numValues;
+    return (sum/numValues)/255;
   }
 
 
